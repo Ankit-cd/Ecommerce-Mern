@@ -4,7 +4,13 @@ import { Input } from "../ui/input";
 import { Select, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
 
-const FormTemplate = ({ formControls, formData, setFormData, onSubmit, buttonText }) => {
+const FormTemplate = ({
+  formControls,
+  formData,
+  setFormData,
+  onSubmit,
+  buttonText,
+}) => {
   const renderInputsByComponentType = (control) => {
     let element = null;
     const value = formData[control.name] || "";
@@ -17,13 +23,28 @@ const FormTemplate = ({ formControls, formData, setFormData, onSubmit, buttonTex
             name={control.name}
             type={control.type}
             placeholder={control.placeholder}
+            value={value}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                [control.name]: e.target.value,
+              });
+            }}
           />
         );
         break;
 
       case "select":
         element = (
-          <Select>
+          <Select
+          onValueChange = {(val)=>{
+            setFormData({
+              ...formData,
+              [control.name]:val,
+            })
+
+          }}
+           value={value}>
             <SelectTrigger className={`w-full`}>
               <SelectValue placeholder={control.placeholder} />
             </SelectTrigger>
@@ -43,9 +64,16 @@ const FormTemplate = ({ formControls, formData, setFormData, onSubmit, buttonTex
       case "textarea":
         element = (
           <Textarea
+            value={value}
             id={control.name}
             name={control.name}
             placeholder={control.placeholder}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                [control.name]: e.target.value,
+              });
+            }}
           ></Textarea>
         );
         break;
@@ -53,10 +81,17 @@ const FormTemplate = ({ formControls, formData, setFormData, onSubmit, buttonTex
       default:
         element = (
           <Input
+            value={value}
             id={control.name}
             name={control.name}
             type={control.type}
             placeholder={control.placeholder}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                [control.name]: e.target.value,
+              });
+            }}
           />
         );
     }
@@ -72,7 +107,9 @@ const FormTemplate = ({ formControls, formData, setFormData, onSubmit, buttonTex
           </div>
         ))}
       </div>
-      <Button type="submit" className='mt-2 w-full'>{buttonText || "Submit"}</Button>
+      <Button type="submit" className="mt-2 w-full">
+        {buttonText || "Submit"}
+      </Button>
     </form>
   );
 };
