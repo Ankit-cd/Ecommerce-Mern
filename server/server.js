@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import authRouter from './routes/auth/auth-routes.js';
 
 dotenv.config();
 
@@ -25,8 +26,10 @@ app.use(
 );
 
 
-app.use(express.json());
+app.use(express.json());.
 app.use(cookieParser());
+
+app.use('/api/auth',authRouter);
 
 
 app.listen(PORT, () => {
